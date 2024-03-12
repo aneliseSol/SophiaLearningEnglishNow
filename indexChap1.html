@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapters and Images</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        .chapter-list {
+            flex: 0 0 auto;
+            margin-right: 1cm;
+        }
+        .chapter-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .chapter-list ul li {
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .image-container {
+            flex: 1;
+            max-width: 50%; /* Adjust as needed */
+            display: flex;
+            flex-direction: column;
+        }
+        .image-container h2 {
+            margin-bottom: 10px;
+        }
+        .audio-button {
+            margin-bottom: 10px;
+            width: 2cm; /* Adjust button width */
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .audio-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="chapter-list">
+        <h2>Chapter 1</h2>
+        <ul>
+            <li data-image="image1.jpg" data-audio="audioA1_A2a.mp3">Chapter 1 - A</li>
+            <li data-image="image1.jpg" data-audio="audioA1_A3a.mp3">Chapter 1 - B</li>
+            <li data-image="image1.jpg" data-audio="audioA1_A4a.mp3">Chapter 1 - C</li>
+            <!-- Add more list items with data-image and data-audio attributes for each image and audio pair -->
+        </ul>
+    </div>
+    <div class="image-container">
+        <button class="audio-button" id="play-audio">Play Audio</button>
+        <button class="audio-button" id="stop-audio">Stop Audio</button>
+        <h2>Selected Image</h2>
+        <img id="selected-image" src="" alt="Selected Image">
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const chapterItems = document.querySelectorAll(".chapter-list li");
+            let audio;
+
+            chapterItems.forEach(function(item) {
+                item.addEventListener("click", function() {
+                    const imageUrl = this.getAttribute("data-image");
+                    const audioUrl = this.getAttribute("data-audio");
+                    document.getElementById("selected-image").src = imageUrl;
+                    document.getElementById("selected-image").setAttribute("data-audio", audioUrl);
+                    if (audio) {
+                        audio.pause(); // Pause any ongoing audio when selecting a new image
+                    }
+                });
+            });
+
+            document.getElementById("play-audio").addEventListener("click", function() {
+                const audioUrl = document.getElementById("selected-image").getAttribute("data-audio");
+                if (audioUrl) {
+                    audio = new Audio(audioUrl);
+                    audio.play();
+                }
+            });
+
+            document.getElementById("stop-audio").addEventListener("click", function() {
+                if (audio) {
+                    audio.pause();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
